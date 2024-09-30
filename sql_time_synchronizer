@@ -1,0 +1,26 @@
+WITH
+date_cte as (
+	select
+		NOW() as local_time_now,
+		UTC_TIMESTAMP() as utc_time_now, -- UTC+0 Standard Time
+		CONVERT_TZ(UTC_TIMESTAMP(), 'UTC', 'Europe/Helsinki') AS mt_time_now, -- UTC+3/UTC+2 Summer/Winter Standard Time
+		date(CONVERT_TZ(UTC_TIMESTAMP(), 'UTC', 'Europe/Helsinki')) as mt_tday,
+		DATE_SUB(
+			date(CONVERT_TZ(UTC_TIMESTAMP(), 'UTC', 'Europe/Helsinki')), interval 1 day
+		) as mt_lastday
+),
+cte as (
+      SUM(
+        CASE
+            WHEN
+            	time >= (select mt_tday from date_cte)
+			      THEN
+  				    CASE
+                  WHEN table.x > 0
+                  ELSE table.x
+              END
+            ELSE 0
+        END
+    ) as x,
+......
+)
