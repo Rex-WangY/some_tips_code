@@ -1,0 +1,42 @@
+project_name/
+├── README.md
+├── requirements.txt or environment.yml
+├── .gitignore
+├── data/ (optional for local usage)
+├── docs/
+│    └── ... (architecture diagrams, design decisions, etc.)
+├── config/
+│    ├── dev_config.yaml
+│    ├── prod_config.yaml
+│    └── ... (any environment-specific configuration files)
+├── src/
+│    ├── ingestion/
+│    │    ├── __init__.py
+│    │    ├── data_sources.py
+│    │    └── ingest_data.py
+│    ├── transformations/
+│    │    ├── __init__.py
+│    │    ├── cleaning.py
+│    │    └── feature_engineering.py
+│    ├── validation/
+│    │    ├── __init__.py
+│    │    └── data_quality_checks.py
+│    ├── utils/
+│    │    ├── __init__.py
+│    │    ├── logging.py
+│    │    ├── helpers.py
+│    │    └── ...
+│    └── main_pipeline.py (or multiple pipeline entry points)
+├── scripts/
+│    ├── run_pipeline.sh
+│    ├── daily_job.sh
+│    └── ...
+├── tests/
+│    ├── test_ingestion.py
+│    ├── test_transformations.py
+│    ├── test_validation.py
+│    └── ...
+└── notebooks/ (if Jupyter is used)
+     ├── exploration.ipynb
+     ├── data_analysis.ipynb
+     └── ...
