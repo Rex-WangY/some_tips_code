@@ -1,8 +1,7 @@
 - 👋 Hi, I’m @Rex-WangY
-- 👀 I’m interested in data management, data analysis
-- 🌱 I’m currently learning ML
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
+- 👀 I’m interested in data engineering, data management and data analysis
+- 🌱 I’m currently chenging my role to engineer
+
 
 <!---
 Rex-WangY/Rex-WangY is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
