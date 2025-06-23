@@ -1,0 +1,59 @@
+import requests
+import os
+def get_token():
+    tenant_id = os.getenv('rmsp_tenant_id')
+    client_id = os.getenv('rmsp_client_id')
+    client_secret = os.getenv('rmsp_client_secret')
+    url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
+    body = {
+        "grant_type": "client_credentials",
+        "scope": "https://graph.microsoft.com/.default",
+        "client_id": client_id,
+        "client_secret": client_secret
+    }
+    response = requests.post(url, data=body)
+    result = response.json()
+    access_token = result.get("access_token")
+    if not access_token:
+        print("获取token失败，返回内容：", result)
+    return {"Authorization": f"Bearer {access_token}"}
+
+from urllib.parse import quote
+
+site_id = os.getenv('rmsp_site_id')
+folder_path = "file path"
+file_name = 'file_name.xlsm'
+sheet_name = 'sheet name'
+
+encoded_path = quote(f"{folder_path}/{file_name}")
+url = f"https://graph.microsoft.com/v1.0/sites/{site_id}/drive/root:/{encoded_path}:/content"
+print(url)
+headers = get_token()
+
+response = requests.get(url, headers=headers)
+
+print("Status Code:", response.status_code)
+print("Content-Type:", response.headers.get('Content-Type'))
+print("Preview:", response.content[:200])
+
+# 保存到本地调试
+with open("debug_download.xlsm", "wb") as f:
+    f.write(response.content)
+print("文件已保存为 debug_download.xlsm")
+
+import pandas as pd
+from io import BytesIO
+
+if response.status_code == 200 and "application/vnd" in response.headers.get('Content-Type', ''):
+    try:
+        excel = pd.ExcelFile(BytesIO(response.content), engine='openpyxl')
+        print("sheet_names:", excel.sheet_names)
+        if sheet_name in excel.sheet_names:
+            df = pd.read_excel(excel, sheet_name=sheet_name)
+            print(df.head())
+        else:
+            print(f"找不到 sheet: '{sheet_name}'，可用的有：{excel.sheet_names}")
+    except Exception as e:
+        print("读取 Excel 失败：", e)
+else:
+    print("文件没下到，或者 content-type 不对")
