@@ -1,0 +1,8 @@
+# p.communicate()
+# import subprocess, sys
+
+# sh_path = r"C:\Program Files\Git\bin\sh.exe"
+# script_path = r"xxx.sh file path"
+
+# p = subprocess.Popen([sh_path, script_path], stdout=sys.stdout, stderr=sys.stderr)
+# p.communicate()
